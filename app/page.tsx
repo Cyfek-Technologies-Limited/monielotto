@@ -1,4 +1,7 @@
-﻿import {
+"use client";
+
+import { useState } from 'react';
+import {
   Bell,
   ChevronDown,
   ChevronRight,
@@ -49,21 +52,21 @@ const gameNav: Item[] = [
   [Ticket, "Lottery"],
 ];
 const winners = [
-  ["01", "Kristin Watson", "#8052", "300", "7,200 Coins", "08 Jul, 2026", "🧑‍🎤"],
-  ["02", "Zohang786", "#7347", "200", "7,060 Coins", "01 Jul, 2026", "🧑‍🚀"],
-  ["03", "Adewale O.", "#1802", "120", "2,500 Coins", "28 Jun, 2026", "🦊"],
+  ["01", "Kristin Watson", "#8052", "300", "7,200 Coins", "08 Jul, 2026", "KW"],
+  ["02", "Zohang786", "#7347", "200", "7,060 Coins", "01 Jul, 2026", "Z"],
+  ["03", "Adewale O.", "#1802", "120", "2,500 Coins", "28 Jun, 2026", "AO"],
 ];
 const liveWinners = [
-  ["🧑‍🎤", "Kristin W."],
-  ["🧑‍🚀", "Zohang786"],
-  ["🦊", "Adewale O."],
-  ["🎩", "Albert F."],
-  ["👾", "Dianne R."],
+  ["KW", "Kristin W."],
+  ["Z", "Zohang786"],
+  ["AO", "Adewale O."],
+  ["AF", "Albert F."],
+  ["DR", "Dianne R."],
 ];
 const chat = [
-  ["🤖", "KTT Darling", "Adding 10 more tickets today!", "2m"],
-  ["👩‍🦰", "Jenny Wilson", "More tickets, more chances! 🎟️", "5m"],
-  ["🎩", "Albert Flores", "Congrats to today's winners 🎉", "12m"],
+  ["KD", "KTT Darling", "Adding 10 more tickets today!", "2m"],
+  ["JW", "Jenny Wilson", "More tickets, more chances! ???", "5m"],
+  ["AF", "Albert Flores", "Congrats to today's winners 🎉", "12m"],
 ];
 
 function NavGroup({ items, active }: { items: Item[]; active?: string }) {
@@ -101,6 +104,11 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export default function Home() {
+  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
+  const [notice, setNotice] = useState("");
+  const [ticketPurchased, setTicketPurchased] = useState(false);
+  const toggleNumber = (n: number) => { setNotice(""); setTicketPurchased(false); setSelectedNumbers((xs) => xs.includes(n) ? xs.filter((x) => x !== n) : xs.length < 5 ? [...xs, n].sort((a,b) => a-b) : xs); };
+  const buyTicket = () => { if (selectedNumbers.length !== 5) { setNotice("Choose five numbers to continue."); return; } setTicketPurchased(true); setNotice("Your ticket is ready for the next draw!"); };
   return (
     <div className="min-h-screen bg-[#080916] text-[#f7f6ff] font-sans">
       <div className="grid min-h-screen grid-cols-1 md:grid-cols-[210px_minmax(0,1fr)] xl:grid-cols-[226px_minmax(0,1fr)]">
@@ -116,7 +124,7 @@ export default function Home() {
           </a>
           <div className="flex items-center gap-2.5 rounded-xl border border-violet-200/10 bg-gradient-to-r from-[#191630] to-[#111226] p-3">
             <span className="grid size-9 place-items-center rounded-full bg-violet-950 text-xl">
-              🧑‍🚀
+              JD
             </span>
             <span className="min-w-0 flex-1">
               <b className="block text-xs">John Doe</b>
@@ -183,7 +191,7 @@ export default function Home() {
                 className="min-w-0 flex-1 bg-transparent text-[11px] text-white outline-none placeholder:text-[#777892]"
               />
               <kbd className="rounded border border-white/10 px-1 text-[9px]">
-                ⌘ K
+                ? K
               </kbd>
             </label>
             <div className="ml-auto flex items-center gap-2">
@@ -207,7 +215,7 @@ export default function Home() {
               </button>
               <button className="hidden items-center gap-1 rounded-full border border-white/[0.08] bg-[#151529] p-1 pr-2 text-[10px] sm:flex">
                 <span className="grid size-7 place-items-center rounded-full bg-violet-950 text-base">
-                  🧑‍🚀
+                  JD
                 </span>
                 Use***80fb
                 <ChevronDown size={12} />
@@ -268,7 +276,7 @@ export default function Home() {
             <section className="grid gap-3 rounded-2xl border border-violet-200/10 bg-[#111226] p-3 sm:grid-cols-2 xl:grid-cols-[1.25fr_1fr_1fr_1fr] xl:items-center xl:p-4">
               <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#191630] to-[#111226] p-3">
                 <span className="grid size-10 place-items-center rounded-full bg-amber-400/10 text-xl">
-                  🏅
+                  ??
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 text-xs font-bold">
@@ -334,7 +342,7 @@ export default function Home() {
                     key={name}
                     className="flex items-center gap-2 rounded-xl border border-violet-200/[0.06] bg-[#171832] p-2.5"
                   >
-                    <span className="grid size-8 place-items-center rounded-lg bg-violet-950 text-base">
+                    <span className="grid size-8 place-items-center rounded-lg bg-violet-950 text-[10px] font-bold">
                       {avatar}
                     </span>
                     <div className="min-w-0 flex-1">
@@ -346,7 +354,7 @@ export default function Home() {
                         +{(index + 1) * 1200} Coins
                       </strong>
                     </div>
-                    <span className="text-emerald-300">✓</span>
+                    <span className="text-emerald-300">?</span>
                   </div>
                 ))}
               </div>
@@ -363,60 +371,23 @@ export default function Home() {
                       JOIN THE DRAW
                     </span>
                     <h2 className="mt-1 text-base font-bold">
-                      Buy Lottery Tickets
+                      Choose your numbers
                     </h2>
                     <p className="mt-1 text-[10px] text-[#898ba9]">
-                      Get your tickets ready for the next draw.
+                      Pick 5 numbers from 1 to 50 for your ticket.
                     </p>
                   </div>
                   <span className="grid size-10 place-items-center rounded-xl bg-violet-400/15 text-violet-200">
                     <Ticket size={21} />
                   </span>
                 </div>
-                <label
-                  htmlFor="ticket-quantity"
-                  className="mb-2 block text-[10px] font-semibold text-violet-100/80"
-                >
-                  Number of tickets
-                </label>
-                <div className="flex h-11 items-center gap-3 rounded-lg border border-violet-200/10 bg-[#0d0e20] px-3 text-violet-300">
-                  <Ticket size={16} />
-                  <input
-                    id="ticket-quantity"
-                    type="number"
-                    min="1"
-                    defaultValue="1"
-                    className="w-full bg-transparent text-sm text-white outline-none"
-                  />
-                  <span className="text-[10px] text-[#898ba9]">Tickets</span>
-                </div>
-                <div className="my-4 grid gap-3 border-b border-violet-200/10 pb-4 text-[10px] sm:grid-cols-2">
-                  <p className="flex justify-between text-[#898ba9]">
-                    Price per ticket{" "}
-                    <b className="flex items-center gap-1 text-white">
-                      <i className="size-3 rounded-full bg-amber-300" />
-                      100 Coins
-                    </b>
-                  </p>
-                  <p className="flex justify-between text-[#898ba9]">
-                    Estimated value <b className="text-white">$0.01 / ticket</b>
-                  </p>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-[#898ba9]">Total amount</span>
-                  <b className="flex items-center gap-1.5 text-sm">
-                    <i className="size-3.5 rounded-full bg-amber-300" />
-                    100 Coins
-                  </b>
-                </div>
-                <button className="mt-4 flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-500 text-xs font-extrabold shadow-[0_5px_22px_#854eff30] transition hover:brightness-110">
-                  <Ticket size={16} />
-                  Buy Tickets
-                  <ChevronRight size={16} />
-                </button>
-                <p className="mt-3 text-center text-[9px] text-[#898ba9]">
-                  <span className="text-emerald-300">✓</span> Secure checkout ·
-                  Tickets added to your account
+                <div className="mb-2 flex justify-between text-[10px] font-semibold"><span>Your picks</span><span>{selectedNumbers.length} of 5 selected</span></div>
+                <div className="mb-3 flex min-h-10 flex-wrap items-center gap-2 rounded-lg border border-violet-200/10 bg-[#0d0e20] p-2">{selectedNumbers.length ? selectedNumbers.map((n) => <span key={n} className="grid size-7 place-items-center rounded-full bg-violet-500 text-[10px] font-bold">{n}</span>) : <span className="text-[10px] text-[#777892]">Select five numbers below</span>}</div>
+                <div className="grid grid-cols-5 gap-2 sm:grid-cols-10" aria-label="Choose five numbers">{Array.from({ length: 50 }, (_, i) => i + 1).map((n) => <button key={n} type="button" aria-pressed={selectedNumbers.includes(n)} onClick={() => toggleNumber(n)} className={`aspect-square rounded-full border text-[10px] font-bold ${selectedNumbers.includes(n) ? "border-violet-300 bg-violet-600 text-white" : "border-violet-200/10 bg-[#0d0e20] text-violet-100/75"}`}>{n}</button>)}</div>
+                <div className="my-4 border-b border-violet-200/10 pb-4 text-[10px]"><p className="flex justify-between text-[#898ba9]">Price per ticket <b className="text-white">100 Coins</b></p></div>
+                <button type="button" onClick={buyTicket} className="mt-1 flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-500 text-xs font-extrabold"><Ticket size={16} />{ticketPurchased ? "Ticket purchased" : "Guess it · Buy ticket"}<ChevronRight size={16} /></button>
+                {notice && <p role="status" className="mt-3 text-center text-[10px] text-emerald-300">{notice}{ticketPurchased && <span className="block">Numbers: {selectedNumbers.join(" · ")}</span>}</p>}                <p className="mt-3 text-center text-[9px] text-[#898ba9]">
+                  <span className="text-emerald-300">?</span> One ticket · 5 numbers · 100 Coins
                 </p>
               </section>
 
@@ -449,7 +420,7 @@ export default function Home() {
                       key={name}
                       className="flex gap-2.5 rounded-xl bg-[#171832] p-3"
                     >
-                      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-950 text-base">
+                      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-950 text-[10px] font-bold">
                         {avatar}
                       </span>
                       <div className="min-w-0 flex-1">
@@ -522,7 +493,7 @@ export default function Home() {
                           {rank}
                         </span>
                         <span className="flex items-center gap-2 text-left">
-                          <i className="grid size-7 shrink-0 place-items-center rounded-full bg-violet-950 not-italic">
+                          <i className="grid size-7 shrink-0 place-items-center rounded-full bg-violet-950 text-[9px] font-bold not-italic">
                             {avatar}
                           </i>
                           <b className="truncate">{name}</b>
