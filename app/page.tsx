@@ -1,4 +1,4 @@
-import { ArrowRight, Clover } from "lucide-react";
+﻿import { ArrowRight, Clover } from "lucide-react";
 
 const links = ["Home", "Games", "Results", "How It Works", "About"];
 
@@ -103,7 +103,7 @@ export default function Home() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-10  bg-[linear-gradient(90deg,rgba(0,35,25,.62)_0%,rgba(0,35,25,.5)_58%,rgba(0,35,25,.28)_100%)] max-[640px]:block"
         />
-        <div className="relative z-20 w-[55%] pb-2.5 max-[900px]:w-[58%] max-[640px]:w-full">
+        <div className="relative z-20 w-[55%] mt-20 lg:mt-0 pb-2.5 max-[900px]:w-[58%] max-[640px]:w-full">
           <h1 className="mb-[26px] -ml-2 flex w-fit max-w-full -rotate-2 flex-col text-[clamp(68px,8.2vw,138px)] font-black leading-[.78] tracking-[-.075em] text-[#fffdf1] [paint-order:stroke_fill] [-webkit-text-stroke:5px_#064331] [filter:drop-shadow(0_6px_0_#064331)] max-[900px]:text-[clamp(62px,9vw,92px)] max-[640px]:mb-[15px] max-[640px]:ml-[-3px] max-[640px]:text-[clamp(54px,14vw,78px)] max-[640px]:tracking-[-.08em] max-[640px]:[-webkit-text-stroke:3px_#064331]">
             <span className="whitespace-nowrap">Big Dreams</span>
             <strong className="block whitespace-nowrap pt-[15px] font-black text-[#ffb914] max-[640px]:pt-3">
@@ -226,23 +226,40 @@ export default function Home() {
       <footer className="border-t-[6px] border-[#ffbf18] bg-[#063d2e] px-5 pb-6 pt-9 text-[#f8f4df] sm:px-8 sm:pt-11">
         <div className="mx-auto grid max-w-[1450px] gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-12">
           <div>
-            <a href="#home" className="inline-flex items-center gap-2 text-2xl font-black tracking-tight text-white sm:text-3xl">
+            <a
+              href="#home"
+              className="inline-flex items-center gap-2 text-2xl font-black tracking-tight text-white sm:text-3xl"
+            >
               <Clover className="fill-[#ffbd1b] text-[#ffbd1b]" size={34} />
               Monie<span className="-ml-2 text-[#ffca26]">Lotto</span>
             </a>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#d7e4d9]">Pick your numbers, join a draw, and make room for a little luck.</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#d7e4d9]">
+              Pick your numbers, join a draw, and make room for a little luck.
+            </p>
           </div>
           <nav aria-label="Footer navigation">
-            <h2 className="text-sm font-extrabold uppercase tracking-widest text-[#ffca26]">Explore</h2>
+            <h2 className="text-sm font-extrabold uppercase tracking-widest text-[#ffca26]">
+              Explore
+            </h2>
             <div className="mt-3 grid gap-2 text-sm text-[#e1ecdf]">
-              <a className="transition hover:text-[#ffca26]" href="#home">Home</a>
-              <a className="transition hover:text-[#ffca26]" href="#games">Draw Games</a>
-              <a className="transition hover:text-[#ffca26]" href="#games">How to Play</a>
+              <a className="transition hover:text-[#ffca26]" href="#home">
+                Home
+              </a>
+              <a className="transition hover:text-[#ffca26]" href="#games">
+                Draw Games
+              </a>
+              <a className="transition hover:text-[#ffca26]" href="#games">
+                How to Play
+              </a>
             </div>
           </nav>
           <div id="responsible-play">
-            <h2 className="text-sm font-extrabold uppercase tracking-widest text-[#ffca26]">Play responsibly</h2>
-            <p className="mt-3 text-sm leading-relaxed text-[#d7e4d9]">Set a limit, take your time, and keep the fun in every draw.</p>
+            <h2 className="text-sm font-extrabold uppercase tracking-widest text-[#ffca26]">
+              Play responsibly
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-[#d7e4d9]">
+              Set a limit, take your time, and keep the fun in every draw.
+            </p>
           </div>
         </div>
         <div className="mx-auto mt-8 flex max-w-[1450px] flex-col gap-2 border-t border-white/15 pt-4 text-xs text-[#c1d2c5] sm:flex-row sm:items-center sm:justify-between">
