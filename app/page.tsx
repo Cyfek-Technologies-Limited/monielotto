@@ -1,576 +1,255 @@
-"use client";
+import { ArrowRight, Clover } from "lucide-react";
 
-import { useState } from 'react';
-import {
-  Bell,
-  ChevronDown,
-  ChevronRight,
-  Clock,
-  Coins,
-  Dices,
-  Gamepad2,
-  Gift,
-  Heart,
-  HomeIcon,
-  LayoutGrid,
-  Menu,
-  MessageCircle,
-  Search,
-  Send,
-  Settings,
-  ShieldCheck,
-  Sparkles,
-  Spade,
-  Star,
-  Tag,
-  Ticket,
-  Trophy,
-  Users,
-  Wallet,
-} from "lucide-react";
+const links = ["Home", "Games", "Results", "How It Works", "About"];
 
-type Item = readonly [React.ElementType, string];
-
-const mainNav: Item[] = [
-  [HomeIcon, "Home"],
-  [Tag, "Promotions"],
-  [Trophy, "Challenges"],
-  [Gift, "Giveaways"],
+const draws = [
+  {
+    slug: "1-billion",
+    name: "1 Billion Draw",
+    amount: "₦1 BILLION",
+    ticket: "₦500",
+    ball: "1",
+    theme: "from-[#ffda18] via-[#ffd52b] to-[#ffb900]",
+  },
+  {
+    slug: "85-million",
+    name: "85 Million Draw",
+    amount: "₦85 MILLION",
+    ticket: "₦300",
+    ball: "85",
+    theme: "from-[#65de27] via-[#a7ec4b] to-[#57ce2a]",
+  },
+  {
+    slug: "55-million",
+    name: "55 Million Draw",
+    amount: "₦55 MILLION",
+    ticket: "₦200",
+    ball: "55",
+    theme: "from-[#ffad14] via-[#ffc13a] to-[#ff9e00]",
+  },
+  {
+    slug: "600-thousand",
+    name: "600 Thousand Draw",
+    amount: "₦600,000",
+    ticket: "₦100",
+    ball: "600K",
+    theme: "from-[#61d72b] via-[#a9ed4c] to-[#55ca2c]",
+  },
+  {
+    slug: "150-thousand",
+    name: "150 Thousand Draw",
+    amount: "₦150,000",
+    ticket: "₦100",
+    ball: "150K",
+    theme: "from-[#ffe33a] via-[#ffec6b] to-[#ffd31b]",
+  },
+  {
+    slug: "60-thousand",
+    name: "60 Thousand Draw",
+    amount: "₦60,000",
+    ticket: "₦100",
+    ball: "60K",
+    theme: "from-[#62d92d] via-[#b2ef57] to-[#54ca32]",
+  },
 ];
-const activityNav: Item[] = [
-  [Heart, "Favorites"],
-  [Clock, "Recent"],
-  [Gamepad2, "My Game Play"],
-];
-const gameNav: Item[] = [
-  [Star, "Featured"],
-  [Sparkles, "New Releases"],
-  [Dices, "Slot Games"],
-  [Users, "Live Dealers"],
-  [LayoutGrid, "Table Games"],
-  [Spade, "Blackjack"],
-  [Ticket, "Lottery"],
-];
-const winners = [
-  ["01", "Kristin Watson", "#8052", "300", "7,200 Coins", "08 Jul, 2026", "KW"],
-  ["02", "Zohang786", "#7347", "200", "7,060 Coins", "01 Jul, 2026", "Z"],
-  ["03", "Adewale O.", "#1802", "120", "2,500 Coins", "28 Jun, 2026", "AO"],
-];
-const liveWinners = [
-  ["KW", "Kristin W."],
-  ["Z", "Zohang786"],
-  ["AO", "Adewale O."],
-  ["AF", "Albert F."],
-  ["DR", "Dianne R."],
-];
-const chat = [
-  ["KD", "KTT Darling", "Adding 10 more tickets today!", "2m"],
-  ["JW", "Jenny Wilson", "More tickets, more chances! ???", "5m"],
-  ["AF", "Albert Flores", "Congrats to today's winners 🎉", "12m"],
-];
-
-function NavGroup({ items, active }: { items: Item[]; active?: string }) {
-  return (
-    <>
-      {items.map(([Icon, label]) => (
-        <a
-          key={label}
-          href={label === "Lottery" ? "#buy" : "#"}
-          className={`group flex min-h-9 items-center gap-3 rounded-lg px-3 text-[12px] font-medium transition hover:bg-white/[0.06] hover:text-white ${
-            label === active
-              ? "border border-violet-400/20 bg-violet-500/15 text-white"
-              : "text-[#a2a2be]"
-          }`}
-        >
-          <Icon size={16} strokeWidth={1.8} />
-          <span>{label}</span>
-          {label === "Promotions" && (
-            <span className="ml-auto rounded bg-violet-500 px-1.5 py-0.5 text-[9px] text-white">
-              3
-            </span>
-          )}
-        </a>
-      ))}
-    </>
-  );
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-2 px-3 text-[9px] font-extrabold tracking-[1.5px] text-[#72738f]">
-      {children}
-    </p>
-  );
-}
 
 export default function Home() {
-  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
-  const [notice, setNotice] = useState("");
-  const [ticketPurchased, setTicketPurchased] = useState(false);
-  const toggleNumber = (n: number) => { setNotice(""); setTicketPurchased(false); setSelectedNumbers((xs) => xs.includes(n) ? xs.filter((x) => x !== n) : xs.length < 5 ? [...xs, n].sort((a,b) => a-b) : xs); };
-  const buyTicket = () => { if (selectedNumbers.length !== 5) { setNotice("Choose five numbers to continue."); return; } setTicketPurchased(true); setNotice("Your ticket is ready for the next draw!"); };
   return (
-    <div className="min-h-screen bg-[#080916] text-[#f7f6ff] font-sans">
-      <div className="grid min-h-screen grid-cols-1 md:grid-cols-[210px_minmax(0,1fr)] xl:grid-cols-[226px_minmax(0,1fr)]">
-        <aside className="sticky top-0 z-20 hidden h-screen flex-col gap-5 overflow-y-auto border-r border-violet-200/[0.08] bg-gradient-to-b from-[#0e0d20] to-[#090a17] px-4 py-5 md:flex">
-          <a
-            href="#"
-            className="flex items-center gap-2.5 px-1 text-base font-extrabold tracking-wide"
-          >
-            <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-violet-400 to-violet-700 shadow-[0_0_24px_#8754ff45]">
-              <Dices size={22} />
-            </span>
-            Monie<span className="-ml-2 text-violet-300">Lotto</span>
-          </a>
-          <div className="flex items-center gap-2.5 rounded-xl border border-violet-200/10 bg-gradient-to-r from-[#191630] to-[#111226] p-3">
-            <span className="grid size-9 place-items-center rounded-full bg-violet-950 text-xl">
-              JD
-            </span>
-            <span className="min-w-0 flex-1">
-              <b className="block text-xs">John Doe</b>
-              <small className="mt-1 flex items-center gap-1 text-[9px] text-amber-300">
-                <ShieldCheck size={11} /> VIP Gold Member
-              </small>
-            </span>
-            <ChevronRight size={15} className="text-[#898ba9]" />
-          </div>
-          <div>
-            <SectionLabel>MAIN MENU</SectionLabel>
-            <nav className="grid gap-1">
-              <NavGroup items={mainNav} active="Home" />
-            </nav>
-          </div>
-          <div>
-            <SectionLabel>MY ACTIVITY</SectionLabel>
-            <nav className="grid gap-1">
-              <NavGroup items={activityNav} />
-            </nav>
-          </div>
-          <div>
-            <SectionLabel>EXPLORE GAMES</SectionLabel>
-            <nav className="grid gap-1">
-              <NavGroup items={gameNav} active="Lottery" />
-            </nav>
-          </div>
-          <div className="mt-auto rounded-xl border border-fuchsia-300/10 bg-[radial-gradient(circle_at_100%_0%,#b548ff20,transparent_60%),#131126] p-4">
-            <span className="mb-3 grid size-8 place-items-center rounded-lg bg-violet-400/15 text-violet-200">
-              <Sparkles size={18} />
-            </span>
-            <b className="text-xs">Feeling lucky?</b>
-            <p className="my-2 text-[10px] leading-relaxed text-[#898ba9]">
-              Discover today&apos;s exciting rewards and special draws.
-            </p>
+    <main className="relative isolate min-h-[100svh] overflow-hidden bg-[#f8f6e9] text-[#064331]">
+      <header className="absolute inset-y-0 top-0 z-20 mx-auto flex h-[116px] w-full max-w-[1530px] items-center justify-between gap-9 px-10 max-[900px]:h-[88px] max-[900px]:gap-[18px] max-[900px]:px-6 max-[640px]:relative max-[640px]:h-[76px] max-[640px]:bg-[#f8f6e9] max-[640px]:px-[17px]">
+        <a
+          href="#home"
+          aria-label="LuckyTide home"
+          className="flex shrink-0 items-center gap-3 text-[clamp(28px,3.3vw,49px)] font-black leading-none tracking-[-2px] text-[#064331] max-[900px]:gap-2 max-[900px]:text-[32px] max-[640px]:gap-1 max-[640px]:text-[27px] max-[640px]:tracking-[-1.5px]"
+        >
+          <Clover
+            size={56}
+            strokeWidth={2.7}
+            className="shrink-0 fill-[#ffbd1b] text-[#064331] max-[900px]:size-[45px] max-[640px]:size-[38px]"
+          />
+          <span>MonieLotto</span>
+        </a>
+        <nav
+          aria-label="Main navigation"
+          className="flex flex-1 items-center justify-center gap-[clamp(22px,3vw,54px)] max-[900px]:gap-4 max-[640px]:hidden"
+        >
+          {links.map((link, index) => (
             <a
-              href="#buy"
-              className="flex items-center text-[10px] font-bold text-violet-300"
+              key={link}
+              href={index === 1 ? "#games" : index === 2 ? "#results" : "#home"}
+              className={`relative whitespace-nowrap py-[14px] text-xl font-bold max-[900px]:text-[15px] ${
+                index === 0
+                  ? "after:absolute after:inset-x-0 after:bottom-[3px] after:h-[5px] after:rounded-full after:bg-[#ffb914]"
+                  : ""
+              }`}
             >
-              Play now <ChevronRight size={14} />
+              {link}
+            </a>
+          ))}
+        </nav>
+        <a
+          href="#games"
+          className="flex h-[58px] min-w-[185px] shrink-0 items-center justify-center gap-[14px] rounded-full bg-[#ffb914] text-xl font-extrabold shadow-[0_5px_0_#d99005] transition duration-300 hover:-translate-y-[3px] hover:scale-[1.03] hover:shadow-[0_8px_0_#d99005] active:scale-95 max-[900px]:h-12 max-[900px]:min-w-[135px] max-[900px]:text-base max-[640px]:h-[43px] max-[640px]:min-w-0 max-[640px]:gap-1.5 max-[640px]:px-4 max-[640px]:text-sm"
+        >
+          Play Now <ArrowRight size={22} className="max-[640px]:size-[17px]" />
+        </a>
+      </header>
+
+      <section
+        id="home"
+        className="mx-auto flex min-h-[100svh] max-w-[1680px] items-center px-[clamp(48px,8.3vw,140px)] pb-[14rem] pt-[145px] max-[900px]:px-[6vw] max-[900px]:pb-20 max-[900px]:pt-[100px]  relative isolate bg-[url('/luckytide-hero.png')] bg-cover bg-center max-[640px]:bg-[url('/tribal-mobile-bg.png')] max-[640px]:bg-[length:100%_100%] max-[640px]:bg-center max-[640px]:min-h-[calc(100svh-76px)] max-[640px]:items-start max-[640px]:px-6 max-[640px]:pb-12 max-[640px]:pt-[38px]"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10  bg-[linear-gradient(90deg,rgba(0,35,25,.62)_0%,rgba(0,35,25,.5)_58%,rgba(0,35,25,.28)_100%)] max-[640px]:block"
+        />
+        <div className="relative z-20 w-[55%] pb-2.5 max-[900px]:w-[58%] max-[640px]:w-full">
+          <h1 className="mb-[26px] -ml-2 flex w-fit max-w-full -rotate-2 flex-col text-[clamp(68px,8.2vw,138px)] font-black leading-[.78] tracking-[-.075em] text-[#fffdf1] [paint-order:stroke_fill] [-webkit-text-stroke:5px_#064331] [filter:drop-shadow(0_6px_0_#064331)] max-[900px]:text-[clamp(62px,9vw,92px)] max-[640px]:mb-[15px] max-[640px]:ml-[-3px] max-[640px]:text-[clamp(54px,14vw,78px)] max-[640px]:tracking-[-.08em] max-[640px]:[-webkit-text-stroke:3px_#064331]">
+            <span className="whitespace-nowrap">Big Dreams</span>
+            <strong className="block whitespace-nowrap pt-[15px] font-black text-[#ffb914] max-[640px]:pt-3">
+              Bigger Wins
+            </strong>
+          </h1>
+
+          <p className="font-bold mt-10 text-white my-10 mb-[15px] text-[clamp(17px,1.55vw,25px)] lg:font-semibold leading-[1.3] max-[900px]:my-5 max-[900px]:mb-[10px] max-[900px]:text-lg max-[640px]:mt-[3rem] max-[640px]:mb-[17px] max-[640px]:max-w-[330px] max-[640px]:text-base">
+            Join thousands of players and stand a chance
+            <br className="max-[640px]:hidden" /> to win amazing prizes.
+            It&apos;s simple, fun and
+            <br className="max-[640px]:hidden" /> could be your lucky day!
+          </p>
+          <div className="flex items-center gap-10 max-[640px]:gap-[23px]">
+            <a
+              href="#games"
+              className="flex h-[73px] min-w-[220px] -rotate-3 items-center justify-center gap-[14px] rounded-[44px] border-[5px] border-[#064331] bg-[#ffb914] text-2xl font-extrabold shadow-[0_6px_0_#064331] transition duration-300 hover:-translate-y-[3px] hover:scale-[1.03] hover:shadow-[0_9px_0_#064331] active:scale-95 max-[900px]:h-[62px] max-[900px]:min-w-[180px] max-[900px]:text-xl max-[640px]:h-[54px] max-[640px]:min-w-[160px] max-[640px]:gap-2 max-[640px]:border-[3px] max-[640px]:text-lg"
+            >
+              Play Now{" "}
+              <ArrowRight size={24} className="max-[640px]:size-[19px]" />
+            </a>
+            <a
+              href="#games"
+              className="text-white  border-b-[3px] border-[#147248] px-0 py-[7px] text-xl font-extrabold max-[640px]:text-base"
+            >
+              View Games
             </a>
           </div>
-          <a
-            href="#"
-            className="flex items-center gap-2 border-t border-violet-200/10 pt-3 text-[11px] text-[#9a9ab3]"
-          >
-            <Settings size={16} />
-            Settings
-          </a>
-        </aside>
-
-        <div className="min-w-0">
-          <header className="sticky top-0 z-10 flex min-h-[66px] items-center justify-between gap-3 border-b border-violet-200/[0.08] bg-[#0b0b19ed] px-4 backdrop-blur-xl sm:px-6 xl:px-8">
-            <button
-              className="grid size-9 place-items-center rounded-lg border border-violet-200/10 bg-[#151529] text-white md:hidden"
-              aria-label="Open menu"
-            >
-              <Menu size={19} />
-            </button>
-            <label className="hidden h-9 w-[min(330px,35%)] items-center gap-2 rounded-lg border border-white/[0.08] bg-[#141427] px-3 text-[#81829f] sm:flex">
-              <Search size={15} />
-              <input
-                placeholder="Search games, promotions..."
-                className="min-w-0 flex-1 bg-transparent text-[11px] text-white outline-none placeholder:text-[#777892]"
-              />
-              <kbd className="rounded border border-white/10 px-1 text-[9px]">
-                ? K
-              </kbd>
-            </label>
-            <div className="ml-auto flex items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#151529] px-2.5 py-2 text-[10px] font-bold sm:px-3">
-                <i className="size-3.5 rounded-full border border-amber-100 bg-[radial-gradient(circle_at_32%_28%,#fff2a0,#ffc52e_50%,#d9890b)]" />
-                8,840
-              </span>
-              <span className="hidden items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#151529] px-3 py-2 text-[10px] font-bold sm:flex">
-                <i className="size-3.5 rounded-full border border-pink-200 bg-[radial-gradient(circle_at_32%_28%,#ffd3ed,#f653b5_50%,#b820a4)]" />
-                100.00
-              </span>
-              <button className="flex items-center gap-1.5 rounded-full border border-violet-300/40 bg-gradient-to-r from-violet-700 to-purple-500 px-3 py-2.5 text-[9px] font-extrabold tracking-wide text-white">
-                <Wallet size={14} /> WALLET
-              </button>
-              <button
-                className="relative hidden size-9 place-items-center rounded-lg border border-white/[0.08] bg-[#151529] text-[#b7b5d1] sm:grid"
-                aria-label="Notifications"
-              >
-                <Bell size={16} />
-                <i className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-pink-400" />
-              </button>
-              <button className="hidden items-center gap-1 rounded-full border border-white/[0.08] bg-[#151529] p-1 pr-2 text-[10px] sm:flex">
-                <span className="grid size-7 place-items-center rounded-full bg-violet-950 text-base">
-                  JD
-                </span>
-                Use***80fb
-                <ChevronDown size={12} />
-              </button>
-            </div>
-          </header>
-
-          <main className="mx-auto flex w-full max-w-[1600px] flex-col gap-5 p-4 sm:p-6 xl:px-8">
-            <section className="relative isolate -mx-4 -mt-4 -mb-5 flex min-h-[680px] aspect-auto items-start overflow-hidden bg-transparent sm:mx-0 sm:my-0 sm:aspect-[2.45/1] sm:min-h-[370px] sm:items-center sm:rounded-2xl sm:border sm:border-violet-300/15 sm:bg-[#09072c] sm:bg-cover sm:bg-center sm:shadow-[0_16px_50px_#00000018] xl:min-h-[410px]">
-              <div
+        </div>
+      </section>
+      <section
+        id="games"
+        className="relative isolate overflow-hidden bg-[#faf8eb] px-5 py-16 text-[#064331] sm:px-8 sm:py-20 lg:px-12"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-24 -top-32 -z-10 size-[360px] rounded-full bg-gradient-to-br from-[#1a9b51] via-[#b7d848] to-[#ffcf1e]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-8 -z-10 h-40 w-64 bg-[radial-gradient(#f6cf42_1.5px,transparent_1.5px)] bg-[size:15px_15px] opacity-60"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-40 -right-28 -z-10 size-[390px] rounded-full bg-gradient-to-tl from-[#168849] via-[#ffd328] to-transparent"
+        />
+        <div className="mx-auto max-w-[1450px]">
+          <div className="mx-auto mb-9 max-w-4xl text-center sm:mb-10">
+            <span className="relative inline-flex items-center rounded-full bg-gradient-to-r from-[#12a342] to-[#006b36] px-8 py-2 text-lg font-extrabold italic text-white shadow-[0_4px_0_#07552f] sm:text-2xl">
+              <i
                 aria-hidden="true"
-                className="absolute inset-0 hidden bg-cover bg-center sm:block"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(90deg,#08072bf5 0%,#0b0737e8 25%,#100847a8 43%,#17094a25 65%,transparent 100%),linear-gradient(0deg,#0906215c,transparent 27%),url('/lottery-hero.png')",
-                }}
-              />
-              <img
-                src="/images/lottery-cat-machine.png"
-                alt="A dressed-up ginger cat presenting a purple lottery machine filled with numbered balls"
-                fetchPriority="high"
-                className="absolute  bottom-38 left-1/2 z-0 w-[105%] max-w-none -translate-x-1/2 sm:hidden"
-              />
-              <div className="relative  z-10 w-full px-5 pt-9 pb-[300px] sm:max-w-[600px] sm:px-10 sm:py-10 xl:px-14">
-                <h1 className="hidden lg:block text-balance text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.08] tracking-[-1.7px] text-white drop-shadow-[0_2px_22px_#08072c99]">
-                  MonieLotto —<br className="hidden lg-block" />
-                  <span className="bg-gradient-to-r from-white via-violet-200 to-violet-400 bg-clip-text text-transparent">
-                    Your chance to win big
-                  </span>
-                </h1>
-
-                <h1 className="lg:hidden text-balance text-center text-[clamp(2.3rem,5vw,4.5rem)] font-extrabold leading-[1.08] tracking-[-1.7px] text-white drop-shadow-[0_2px_22px_#08072c99]">
-                  <span className="bg-gradient-to-r from-white via-violet-200 to-violet-400 bg-clip-text text-transparent">
-                    Win Big With MonieLotto
-                  </span>
-                </h1>
-                <p className="hidden lg:block mt-4 max-w-[370px] text-xs leading-7 text-violet-100/90 sm:text-[13px]">
-                  Your next big win could be one ticket away. Join the draw,
-                  test your luck, and unlock exciting rewards.
-                </p>
-                <div className="mt-5 lg:justify-start justify-center flex flex-wrap items-center gap-x-5 gap-y-3">
-                  <a
-                    href="#buy"
-                    className="inline-flex min-h-10 items-center gap-3 rounded-full border border-white bg-gradient-to-r from-white to-violet-100 px-5 text-[10px] font-extrabold tracking-wide text-[#17102a] shadow-[0_0_22px_#b69bff28] transition hover:-translate-y-0.5 hover:bg-violet-200"
-                  >
-                    GET YOUR TICKETS <ChevronRight size={15} />
-                  </a>
-                  <a
-                    href="#winners"
-                    className="text-[10px] font-semibold text-violet-100 hover:text-white"
-                  >
-                    View previous winners
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            <section className="grid gap-3 rounded-2xl border border-violet-200/10 bg-[#111226] p-3 sm:grid-cols-2 xl:grid-cols-[1.25fr_1fr_1fr_1fr] xl:items-center xl:p-4">
-              <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#191630] to-[#111226] p-3">
-                <span className="grid size-10 place-items-center rounded-full bg-amber-400/10 text-xl">
-                  ??
+                className="absolute -left-10 text-3xl not-italic text-[#ffc400]"
+              >
+                ✦
+              </i>
+              Our Draws
+              <i
+                aria-hidden="true"
+                className="absolute -right-10 text-3xl not-italic text-[#ffc400]"
+              >
+                ✦
+              </i>
+            </span>
+            <h2 className="mt-4 text-4xl font-black italic leading-tight tracking-tight text-[#064331] sm:text-5xl lg:text-6xl">
+              Pick a Draw, Win Big!
+            </h2>
+            <div className="mx-auto mt-1 h-1.5 w-28 -rotate-2 rounded-full bg-[#ffca05]" />
+            <p className="mt-3 text-base font-semibold text-[#174a38] sm:text-lg lg:text-xl">
+              Choose from our exciting draws and get a ticket for your chance to
+              win amazing prizes.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {draws.map((draw) => (
+              <article
+                key={draw.name}
+                className={`group relative isolate min-h-[270px] overflow-hidden rounded-[26px] border-2 border-white/80 bg-gradient-to-br ${draw.theme} p-5 shadow-[0_5px_0_#d2b32a55] transition duration-200 hover:-translate-y-1 hover:shadow-xl sm:min-h-[290px] sm:p-6`}
+              >
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 -z-10 opacity-20 [background-image:radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px]"
+                />
+                <span className="inline-flex rounded-full bg-[#064331] px-4 py-1.5 text-sm font-extrabold text-white shadow-sm sm:text-base">
+                  {draw.name}
                 </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 text-xs font-bold">
-                    John Doe{" "}
-                    <span className="flex items-center gap-1 rounded bg-amber-400/10 px-1.5 py-1 text-[8px] text-amber-300">
-                      <Trophy size={10} /> GOLD VIP
-                    </span>
-                  </div>
-                  <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full w-3/5 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" />
-                  </div>
-                  <div className="mt-1 flex justify-between text-[8px] text-[#898ba9]">
-                    <span>205 tickets purchased</span>
-                    <span>Level 4 · Level 5</span>
-                  </div>
+                <span className="absolute right-4 top-4 grid size-[76px] place-items-center rounded-full border-[5px] border-white/80 bg-gradient-to-br from-white via-[#e9f3df] to-[#91c94a] text-xl font-black text-[#064331] shadow-[0_8px_16px_#194b2638] sm:right-5 sm:top-5 sm:size-[86px] sm:text-2xl">
+                  {draw.ball}
+                </span>
+                <div className="relative z-10 mt-4 pr-10 text-center sm:mt-5">
+                  <h3 className="text-[clamp(2rem,5vw,3.35rem)] font-black leading-[.92] tracking-[-.055em] text-white [paint-order:stroke_fill] [-webkit-text-stroke:2px_#064331] [filter:drop-shadow(0_4px_0_#064331)]">
+                    {draw.amount}
+                    <span className="mt-1 block text-[#ffcb08]">JACKPOT</span>
+                  </h3>
                 </div>
-              </div>
-              <Stat
-                icon={Ticket}
-                title="Your Tickets"
-                value="205"
-                trend="+12%"
-                tone="violet"
-              />
-              <Stat
-                icon={Coins}
-                title="Total Tickets"
-                value="1,000,025"
-                tone="amber"
-              />
-              <Stat
-                icon={Trophy}
-                title="Win Chance"
-                value="0.0015%"
-                tone="green"
-              />
-            </section>
-
-            <section className="rounded-2xl border border-violet-200/10 bg-[#111226] p-4 sm:p-5">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-sm font-bold">Live Winners</h2>
-                  <p className="mt-1 text-[10px] text-[#898ba9]">
-                    See who&apos;s winning right now
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center gap-1 rounded-full bg-emerald-400/10 px-2 py-1 text-[9px] font-bold text-emerald-300">
-                    <i className="size-1.5 rounded-full bg-emerald-300" />
-                    LIVE
-                  </span>
-                  <button className="rounded-md bg-violet-400/15 px-2.5 py-1.5 text-[9px] text-violet-100">
-                    This week
-                  </button>
-                  <button className="hidden rounded-md px-2 py-1.5 text-[9px] text-[#898ba9] sm:block">
-                    24 hours
-                  </button>
-                </div>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
-                {liveWinners.map(([avatar, name], index) => (
-                  <div
-                    key={name}
-                    className="flex items-center gap-2 rounded-xl border border-violet-200/[0.06] bg-[#171832] p-2.5"
+                <div className="relative z-10 mx-auto mt-4 flex max-w-[290px] items-center justify-center gap-2 rounded-full bg-[#fff9d8] px-4 py-2 text-base font-extrabold text-[#064331] shadow-sm sm:mt-5 sm:text-lg">
+                  <span
+                    aria-hidden="true"
+                    className="grid size-7 rotate-[-25deg] place-items-center rounded-md bg-[#075b38] text-sm text-white"
                   >
-                    <span className="grid size-8 place-items-center rounded-lg bg-violet-950 text-[10px] font-bold">
-                      {avatar}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <small className="block truncate text-[9px] text-[#898ba9]">
-                        {name}
-                      </small>
-                      <strong className="mt-1 flex items-center gap-1 text-[10px]">
-                        <i className="size-2.5 rounded-full bg-[radial-gradient(circle_at_32%_28%,#fff2a0,#ffc52e_50%,#d9890b)]" />
-                        +{(index + 1) * 1200} Coins
-                      </strong>
-                    </div>
-                    <span className="text-emerald-300">?</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <div
-              id="buy"
-              className="grid scroll-mt-20 gap-4 xl:grid-cols-[1.1fr_.9fr]"
-            >
-              <section className="rounded-2xl border border-violet-200/10 bg-gradient-to-br from-[#17162e] to-[#111226] p-4 sm:p-6">
-                <div className="mb-5 flex items-start justify-between">
-                  <div>
-                    <span className="text-[9px] font-extrabold tracking-[1.6px] text-violet-300">
-                      JOIN THE DRAW
-                    </span>
-                    <h2 className="mt-1 text-base font-bold">
-                      Choose your numbers
-                    </h2>
-                    <p className="mt-1 text-[10px] text-[#898ba9]">
-                      Pick 5 numbers from 1 to 50 for your ticket.
-                    </p>
-                  </div>
-                  <span className="grid size-10 place-items-center rounded-xl bg-violet-400/15 text-violet-200">
-                    <Ticket size={21} />
+                    ✦
                   </span>
-                </div>
-                <div className="mb-2 flex justify-between text-[10px] font-semibold"><span>Your picks</span><span>{selectedNumbers.length} of 5 selected</span></div>
-                <div className="mb-3 flex min-h-10 flex-wrap items-center gap-2 rounded-lg border border-violet-200/10 bg-[#0d0e20] p-2">{selectedNumbers.length ? selectedNumbers.map((n) => <span key={n} className="grid size-7 place-items-center rounded-full bg-violet-500 text-[10px] font-bold">{n}</span>) : <span className="text-[10px] text-[#777892]">Select five numbers below</span>}</div>
-                <div className="grid grid-cols-5 gap-2 sm:grid-cols-10" aria-label="Choose five numbers">{Array.from({ length: 50 }, (_, i) => i + 1).map((n) => <button key={n} type="button" aria-pressed={selectedNumbers.includes(n)} onClick={() => toggleNumber(n)} className={`aspect-square rounded-full border text-[10px] font-bold ${selectedNumbers.includes(n) ? "border-violet-300 bg-violet-600 text-white" : "border-violet-200/10 bg-[#0d0e20] text-violet-100/75"}`}>{n}</button>)}</div>
-                <div className="my-4 border-b border-violet-200/10 pb-4 text-[10px]"><p className="flex justify-between text-[#898ba9]">Price per ticket <b className="text-white">100 Coins</b></p></div>
-                <button type="button" onClick={buyTicket} className="mt-1 flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-500 text-xs font-extrabold"><Ticket size={16} />{ticketPurchased ? "Ticket purchased" : "Guess it · Buy ticket"}<ChevronRight size={16} /></button>
-                {notice && <p role="status" className="mt-3 text-center text-[10px] text-emerald-300">{notice}{ticketPurchased && <span className="block">Numbers: {selectedNumbers.join(" · ")}</span>}</p>}                <p className="mt-3 text-center text-[9px] text-[#898ba9]">
-                  <span className="text-emerald-300">?</span> One ticket · 5 numbers · 100 Coins
-                </p>
-              </section>
-
-              <aside className="flex min-h-[330px] flex-col rounded-2xl border border-violet-200/10 bg-[#111226] p-4 sm:p-5">
-                <div className="flex items-center justify-between border-b border-violet-200/[0.08] pb-3">
-                  <div className="flex gap-2">
-                    <button className="flex items-center gap-1.5 rounded-lg bg-violet-400/15 px-2.5 py-2 text-[10px] font-bold text-white">
-                      <MessageCircle size={14} />
-                      Chat Room
-                    </button>
-                    <button className="flex items-center gap-1.5 rounded-lg px-2 py-2 text-[10px] text-[#898ba9]">
-                      <Bell size={14} />
-                      Notifications
-                    </button>
-                  </div>
-                  <button aria-label="Chat settings" className="text-[#898ba9]">
-                    <Settings size={15} />
-                  </button>
-                </div>
-                <div className="flex justify-between py-3 text-[9px] text-[#898ba9]">
-                  <span className="flex items-center gap-1.5">
-                    <i className="size-1.5 rounded-full bg-emerald-300" />
-                    25 players online
-                  </span>
-                  <span>Community chat</span>
-                </div>
-                <div className="grid flex-1 content-start gap-2">
-                  {chat.map(([avatar, name, message, time]) => (
-                    <div
-                      key={name}
-                      className="flex gap-2.5 rounded-xl bg-[#171832] p-3"
-                    >
-                      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-violet-950 text-[10px] font-bold">
-                        {avatar}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex justify-between gap-2 text-[10px]">
-                          <b>{name}</b>
-                          <small className="text-[#898ba9]">{time}</small>
-                        </div>
-                        <p className="mt-1 text-[10px] leading-relaxed text-[#a2a2be]">
-                          {message}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-3 flex h-10 items-center gap-2 rounded-lg border border-violet-200/10 bg-[#0d0e20] px-3">
-                  <input
-                    placeholder="Send a message..."
-                    aria-label="Send a message"
-                    className="min-w-0 flex-1 bg-transparent text-[10px] outline-none placeholder:text-[#777892]"
-                  />
-                  <button aria-label="Send message" className="text-violet-300">
-                    <Send size={15} />
-                  </button>
-                </div>
-              </aside>
-            </div>
-
-            <section
-              id="winners"
-              className="scroll-mt-20 rounded-2xl border border-violet-200/10 bg-[#111226] p-4 sm:p-5"
-            >
-              <div className="mb-4 flex items-end justify-between gap-3">
-                <div>
-                  <span className="text-[9px] font-extrabold tracking-[1.6px] text-violet-300">
-                    THE LUCKY ONES
-                  </span>
-                  <h2 className="mt-1 text-base font-bold">Previous Winners</h2>
-                  <p className="mt-1 text-[10px] text-[#898ba9]">
-                    Celebrate the latest winners and their rewards.
-                  </p>
+                  Ticket:{" "}
+                  <strong className="text-[#08753e]">{draw.ticket}</strong>
                 </div>
                 <a
-                  href="#winners"
-                  className="flex shrink-0 items-center text-[9px] font-semibold text-violet-300 hover:text-white"
+                  href={`/draw/${draw.slug}`}
+                  className="relative z-10 mx-auto mt-2 flex min-h-12 max-w-[290px] items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#00643c] to-[#00452f] px-5 text-lg font-extrabold text-white shadow-[0_4px_0_#003d2c] transition duration-300 hover:scale-[1.03] hover:brightness-110 active:scale-95 sm:min-h-[54px] sm:text-xl"
                 >
-                  View all <ChevronRight size={14} />
+                  Play Now <ArrowRight size={20} />
                 </a>
-              </div>
-              <div className="overflow-x-auto">
-                <div className="min-w-[650px]">
-                  <div className="grid grid-cols-[.4fr_1.5fr_1fr_1fr_1.3fr_1fr] gap-2 border-b border-violet-200/10 px-2 py-3 text-center text-[8px] font-bold tracking-wide text-[#72738f]">
-                    <span>RANK</span>
-                    <span>WINNER</span>
-                    <span>WINNING TICKET</span>
-                    <span>TOTAL TICKETS</span>
-                    <span>PRIZE</span>
-                    <span>DATE</span>
-                  </div>
-                  {winners.map(
-                    ([rank, name, ticket, total, prize, date, avatar]) => (
-                      <div
-                        key={rank}
-                        className="grid grid-cols-[.4fr_1.5fr_1fr_1fr_1.3fr_1fr] items-center gap-2 border-b border-violet-200/[0.06] px-2 py-3 text-center text-[9px] text-violet-100/80"
-                      >
-                        <span
-                          className={`font-bold ${
-                            rank === "01" ? "text-amber-300" : "text-[#898ba9]"
-                          }`}
-                        >
-                          {rank}
-                        </span>
-                        <span className="flex items-center gap-2 text-left">
-                          <i className="grid size-7 shrink-0 place-items-center rounded-full bg-violet-950 text-[9px] font-bold not-italic">
-                            {avatar}
-                          </i>
-                          <b className="truncate">{name}</b>
-                        </span>
-                        <span>{ticket}</span>
-                        <span>{total}</span>
-                        <span className="font-semibold text-emerald-300">
-                          {prize}
-                        </span>
-                        <span className="text-[#898ba9]">{date}</span>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            </section>
-            <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-violet-200/[0.08] pt-4 text-[9px] text-[#898ba9]">
-              <span>© 2026 MonieLotto. Play responsibly.</span>
-              <div className="flex gap-4">
-                <a href="#" className="hover:text-white">
-                  Terms
-                </a>
-                <a href="#" className="hover:text-white">
-                  Privacy
-                </a>
-                <a href="#" className="hover:text-white">
-                  Help &amp; Support
-                </a>
-              </div>
-            </footer>
-          </main>
+                <div
+                  aria-hidden="true"
+                  className="absolute -bottom-12 -left-7 -z-10 h-20 w-[120%] -rotate-3 rounded-[50%] border-t-[15px] border-[#087a42]/80 bg-[#00603a]/90"
+                />
+              </article>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function Stat({
-  icon: Icon,
-  title,
-  value,
-  trend,
-  tone,
-}: {
-  icon: React.ElementType;
-  title: string;
-  value: string;
-  trend?: string;
-  tone: "violet" | "amber" | "green";
-}) {
-  const tones = {
-    violet: "bg-violet-400/10 text-violet-300",
-    amber: "bg-amber-300/10 text-amber-300",
-    green: "bg-emerald-300/10 text-emerald-300",
-  };
-  return (
-    <div className="flex items-center gap-3 rounded-xl border border-violet-200/[0.06] bg-[#171832] p-3">
-      <span
-        className={`grid size-10 shrink-0 place-items-center rounded-xl ${tones[tone]}`}
-      >
-        <Icon size={19} />
-      </span>
-      <span className="min-w-0 flex-1">
-        <small className="block text-[9px] text-[#898ba9]">{title}</small>
-        <strong
-          className={`mt-1 block truncate text-sm ${
-            tone === "green" ? "text-emerald-300" : "text-white"
-          }`}
-        >
-          {value}
-        </strong>
-      </span>
-      {trend && (
-        <small className="rounded-md bg-emerald-300/10 px-1.5 py-1 text-[8px] font-bold text-emerald-300">
-          {trend}
-        </small>
-      )}
-    </div>
+      </section>
+      <footer className="border-t-[6px] border-[#ffbf18] bg-[#063d2e] px-5 pb-6 pt-9 text-[#f8f4df] sm:px-8 sm:pt-11">
+        <div className="mx-auto grid max-w-[1450px] gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-12">
+          <div>
+            <a href="#home" className="inline-flex items-center gap-2 text-2xl font-black tracking-tight text-white sm:text-3xl">
+              <Clover className="fill-[#ffbd1b] text-[#ffbd1b]" size={34} />
+              Monie<span className="-ml-2 text-[#ffca26]">Lotto</span>
+            </a>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#d7e4d9]">Pick your numbers, join a draw, and make room for a little luck.</p>
+          </div>
+          <nav aria-label="Footer navigation">
+            <h2 className="text-sm font-extrabold uppercase tracking-widest text-[#ffca26]">Explore</h2>
+            <div className="mt-3 grid gap-2 text-sm text-[#e1ecdf]">
+              <a className="transition hover:text-[#ffca26]" href="#home">Home</a>
+              <a className="transition hover:text-[#ffca26]" href="#games">Draw Games</a>
+              <a className="transition hover:text-[#ffca26]" href="#games">How to Play</a>
+            </div>
+          </nav>
+          <div id="responsible-play">
+            <h2 className="text-sm font-extrabold uppercase tracking-widest text-[#ffca26]">Play responsibly</h2>
+            <p className="mt-3 text-sm leading-relaxed text-[#d7e4d9]">Set a limit, take your time, and keep the fun in every draw.</p>
+          </div>
+        </div>
+        <div className="mx-auto mt-8 flex max-w-[1450px] flex-col gap-2 border-t border-white/15 pt-4 text-xs text-[#c1d2c5] sm:flex-row sm:items-center sm:justify-between">
+          <span>© 2026 MonieLotto. All rights reserved.</span>
+          <span>Choose 5 numbers from 1–50 · Play for fun</span>
+        </div>
+      </footer>
+    </main>
   );
 }

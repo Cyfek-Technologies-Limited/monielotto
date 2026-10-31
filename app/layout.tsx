@@ -1,18 +1,11 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Baloo_2 } from 'next/font/google'
 import './globals.css'
 
-const baloo = Baloo_2({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-baloo',
-})
-
 export const metadata: Metadata = {
-  title: 'Play Online Lottery & Instant Games | NairaLuck',
+  title: 'LuckyTide | Play Today, Change Tomorrow',
   description:
-    'Play draw games and instant-win games online. Tickets from ₦5, draws every day, and big jackpots every week.',
+    'Join LuckyTide for fun lottery games, exciting draws, and a chance to win amazing prizes.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -26,7 +19,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#0b3b33',
+  themeColor: '#f8f6e9',
 }
 
 export default function RootLayout({
@@ -35,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${baloo.variable} light`}>
-      <body className="bg-white font-sans text-brand-ink antialiased">
+    <html lang="en" className="light">
+      <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
